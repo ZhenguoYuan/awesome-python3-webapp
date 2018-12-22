@@ -101,10 +101,12 @@ class TextField(Field):
 class ModelMetaclass(type):
 
     def __new__(cls, name, bases, attrs):
+        #排除Model类本身：
         if name=='Model':
             return type.__new__(cls, name, bases, attrs)
         tableName = attrs.get('__table__', None) or name
         logging.info('found model: %s (table: %s)' % (name, tableName))
+        #获取所有的Field和主键名:
         mappings = dict()
         fields = []
         primaryKey = None
